@@ -7,29 +7,33 @@ import getopt
 import lib.entropy
 
 def print_header():
-     print "PyENT - entropy measurement tool"
-     print "Michal 'carstein' Melewski"
-     print "This is a rip-off from Gynvael Coldwind Ent"
+     print "---------------------------------------------------------------------------------"
+     print "PyENT - entropy measurement and graphing tool - version 0.2"
+     print "Michal Melewski - <carstein.sec@gmail.com>"
+     print "This is a rip-off from Gynvael Coldwind Ent - http://gynvael.coldwind.pl/?id=158"
+     print "---------------------------------------------------------------------------------"
+     
 
 def PyEnt(filename):
     
-    ent = entropy.EntCalc()
+    ent = lib.entropy.EntCalc()
 
     try:
         fh = open(filename, "rb")
         ent.calculate_entropy(fh.read())
+        ent.make_image(filename)
         fh.close()
     except IOError:
-        print("File %s not found"%filename)
+        print "Usage: %s -f <filename>"%sys.argv[0]
         sys.exit(1)
         
-    ent.make_image()
 
 def main():
     print_header()
 
     short_options = "f:"
     long_options = ['file=']
+    filename=""
     
     try:
         opt,args=getopt.getopt(sys.argv[1:],short_options,long_options)
